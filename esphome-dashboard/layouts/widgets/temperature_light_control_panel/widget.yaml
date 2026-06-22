@@ -69,6 +69,7 @@ obj:
       bg_opa: TRANSP
       border_width: 0
       scrollbar_mode: "off"
+      scrollable: false
       widgets:
       - obj:
           id: temp_color_preview
@@ -80,6 +81,7 @@ obj:
           border_color: 0x888888
           align: CENTER
           scrollbar_mode: "off"
+          scrollable: false
           widgets:
           - label:
               id: temp_kelvin_label
@@ -95,6 +97,7 @@ obj:
       radius: 20
       border_width: 0
       scrollbar_mode: "off"
+      scrollable: false
       pad_all: 12
       widgets:
       - label:

@@ -59,6 +59,7 @@ obj:
       border_width: 0
       radius: 1
       scrollbar_mode: "off"
+      scrollable: false
   # Brightness control card
   - obj:
       width: 100%

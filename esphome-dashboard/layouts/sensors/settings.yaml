@@ -20,6 +20,6 @@ settings_init:
           else:
           - lvgl.widget.hide: auto_off_checked
           - lvgl.widget.show: auto_off_unchecked
-#      - delay: 500ms
+      - delay: 500ms
 #      - script.execute: update_battery_display
 

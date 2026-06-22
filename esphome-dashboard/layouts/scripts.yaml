@@ -196,7 +196,7 @@
       id(current_light_hue) = h;
       id(current_light_saturation) = s;
       
-      lv_arc_set_value(id(light_hue_arc), h);
+      lv_slider_set_value(id(light_hue_arc), h, LV_ANIM_OFF);
       lv_slider_set_value(id(light_saturation_slider), s, LV_ANIM_ON);
   - script.execute:
       id: apply_light_hs_color

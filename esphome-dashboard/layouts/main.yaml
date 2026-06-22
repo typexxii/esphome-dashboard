@@ -32,11 +32,12 @@ lvgl:
     - <<: !include { file: widgets/boot_screen/widget.yaml }
     # Settings Panel (hidden by default, shown on swipe down)
     - <<: !include widgets/settings_panel/widget.yaml
-    # RGB Light Control Panel (hidden by default, shown on long press)
+    # Light Control Panel (hidden by default, shown on long press)
     - <<: !include widgets/light_control_panel/widget.yaml
     # Temperature Light Control Panel (hidden by default, shown on long press)
     - <<: !include widgets/temperature_light_control_panel/widget.yaml
-
+    # Climate Control Panel (hidden by default, shown on click)
+  #  - <<: !include widgets/climate_control_panel/widget.yaml
   pages:
   - id: splash
     skip: true
@@ -48,7 +49,8 @@ lvgl:
   - <<: !include pages/bedroom.yaml
   - <<: !include pages/bathroom.yaml
   - <<: !include pages/outdoor.yaml
-
+# - <<: !include pages/energy.yaml
+# - <<: !include pages/climate.yaml
 
 packages:
   # header
@@ -75,4 +77,8 @@ packages:
   # outdoor sensors
   <<: !include sensors/outdoor.yaml
 
+  # energy sensors
+  #  <<: !include sensors/energy.yaml
 
+  # climate sensors
+  #  <<: !include sensors/climate.yaml
