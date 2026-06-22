@@ -1,14 +1,10 @@
-# 🏠 ESPHome Home Assistant Display
+# ESPHome Home Assistant Display
 
-A beautiful, touch-enabled smart home control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, climate, and monitor energy usage directly from a sleek wall-mounted touchscreen.
-
-<p align="center">
-  <img src="images/ui-demo.jpg" alt="UI Demo" width="400">
-</p>
-
+A touch-enabled smart home lighting control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, directly from a sleek wall-mounted touchscreen.
+Based on https://github.com/gizmo-boss/esphome-lvgl-dashboard, added new control for temperature colour only lights, cleaned up pages and sliders, fixed issues etc.
 ---
 
-## 📟 Device Specifications
+## Device Specifications
 
 | Specification | Details |
 |---------------|---------|
@@ -22,51 +18,38 @@ A beautiful, touch-enabled smart home control panel built with ESPHome and LVGL 
 | **Display Interface** | QSPI |
 | **Framework** | ESP-IDF |
 
-### 🛒 Where to Buy
+### Where to Buy
 
 - **Display Module**: [AliExpress — Guition JC3248W535C](https://a.aliexpress.com/_EIyWvhw)
 
-### 🖨️ 3D Printed Case
+### 3D Printed Case
 
 - **Desktop Enclosure**: [MakerWorld — Guition JC3248W535 3.5" ESP32 Desktop Enclosure](https://makerworld.com/en/models/1026987-guition-jc3248w535-3-5-esp32-desktop-enclosure?from=search#profileId-1009332)
 
 ---
 
-## ✨ Features
+## Features
 
-### 🏡 Room-Based Control Pages
+### Room-Based Control Pages
 - **Bedroom** — Light controls, temperature & humidity monitoring
 - **Living Room** — Multi-zone lighting, climate sensors
 - **Bathroom** — Light and environmental controls
 - **Corridor** — Hallway lighting
 - **Outdoor** — External lighting and sensors
 
-### 🌡️ Climate Control
-- **Thermostat** — Underfloor heating control
-- **Air Conditioning** — Per-room AC control with fan speed
-- Temperature adjustment with visual feedback
-- Real-time current & target temperature display
-
-### ⚡ Energy Monitoring
-- Grid power consumption
-- Voltage monitoring
-- Battery state of charge (SoC) with visual indicator
-- Battery voltage & power flow
-- Estimated runtime/charge time
-
-### 💡 Smart Lighting
+### Smart Lighting
 - Toggle switches for standard lights
 - RGB light control with color picker
 - Brightness adjustment via long-press
 - Visual state feedback with icons
 
-### ⚙️ Settings Panel
+### Settings Panel
 - Display brightness slider
 - Auto screen-off toggle (60s timeout)
 - Touch-to-wake functionality
 - WiFi connection status
 
-### 🎨 User Interface
+### User Interface
 - Modern dark theme with accent colors
 - Smooth LVGL animations
 - Header with WiFi status & page title
@@ -76,7 +59,7 @@ A beautiful, touch-enabled smart home control panel built with ESPHome and LVGL 
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **Python 3.11** (Python 3.14 not yet supported by ESPHome)
 - **Home Assistant** instance running on your network
@@ -85,7 +68,7 @@ A beautiful, touch-enabled smart home control panel built with ESPHome and LVGL 
 
 ---
 
-## 🚀 Setup
+## Setup
 
 ### Windows
 
@@ -115,7 +98,7 @@ pip install esphome
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### 1. Create `secrets.yaml`
 
@@ -151,7 +134,7 @@ entity_id: switch.your_bedroom_light
 
 ---
 
-## 🔧 Compile & Upload
+## Compile & Upload
 
 ### Via USB (First Time)
 
@@ -182,7 +165,7 @@ esphome run index.yaml --device esphome-web-e90dec.local
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 HomeAssistant_Display/
@@ -204,10 +187,8 @@ HomeAssistant_Display/
     │   ├── bedroom.yaml
     │   ├── living_room.yaml
     │   ├── bathroom.yaml
-    │   ├── corridor.yaml
-    │   ├── outdoor.yaml
-    │   ├── energy.yaml
-    │   └── climate.yaml
+    │   ├── kitchen.yaml
+    │   └── outdoor.yaml
     │
     ├── sensors/            # Home Assistant sensor bindings
     │
@@ -224,12 +205,12 @@ HomeAssistant_Display/
         │       ├── rgb_light_buttons/
         │       └── fan_buttons/
         ├── light_control_panel/   # Brightness slider overlay
-        └── climate_control_panel/ # Temperature control overlay
+
 ```
 
 ---
 
-## 🎯 Adding New Devices
+## Adding New Devices
 
 ### Adding a Light Switch
 
@@ -267,10 +248,22 @@ HomeAssistant_Display/
         width: 49%
         height: 86
 ```
+### Adding an colour temperature Light
 
+```yaml
+- button:
+    <<: !include
+      file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/widget.yaml
+      vars:
+        uid: my_rgb_light
+        entity_id: light.my_rgb_entity
+        text: "RGB Light"
+        width: 49%
+        height: 86
+```
 ---
 
-## 🔌 Pin Configuration
+## Pin Configuration
 
 | Function | GPIO |
 |----------|------|
@@ -283,7 +276,7 @@ HomeAssistant_Display/
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Display Not Working
 - Verify PSRAM is in octal mode at 80MHz
@@ -303,15 +296,15 @@ HomeAssistant_Display/
 
 ---
 
-## 📄 License
+## License
 
 This project is open source. Feel free to use, modify, and distribute.
 
 ---
 
-## 🙏 Acknowledgments
-
-- [ESPHome](https://esphome.io/) — The foundation for this project
-- [LVGL](https://lvgl.io/) — Powerful graphics library
-- [Material Design Icons](https://materialdesignicons.com/) — Beautiful icon set
-- [Home Assistant](https://www.home-assistant.io/) — Smart home platform
+## Acknowledgments
+- https://github.com/gizmo-boss/esphome-lvgl-dashboard Inspiration and basic structure for this project
+- [ESPHome](https://esphome.io/)  The foundation for this project
+- [LVGL](https://lvgl.io/)  Powerful graphics library
+- [Material Design Icons](https://materialdesignicons.com/)  Beautiful icon set
+- [Home Assistant](https://www.home-assistant.io/)  Smart home platform
