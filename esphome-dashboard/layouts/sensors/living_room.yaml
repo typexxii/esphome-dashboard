@@ -1,0 +1,29 @@
+# Living room widget sensors
+Sideboard_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: sideboard_light, entity_id: light.sideboard } }
+Tripod_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/sensors.yaml, vars: { uid: tripod_light, entity_id: light.hue_ambiance_lamp_1 } }
+Corner_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: corner_light, entity_id: light.corner_lamp } }
+Fireplace_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: fireplace_light, entity_id: light.fireplace_2 } }
+Accent_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: accent_light, entity_id: light.lounge_accents } }
+Hall_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: hall_light, entity_id: light.fireplace } }
+
+# Living room temperature sensor
+living_room_temp_sensor:
+  sensor:
+  - id: living_room_temp
+    platform: homeassistant
+    entity_id: sensor.weather_station_indoor_temperature
+    on_value:
+    - lvgl.label.update:
+        id: living_room_temp_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "°C";
+
+# Living room humidity sensor
+living_room_humidity_sensor:
+  sensor:
+  - id: living_room_humidity
+    platform: homeassistant
+    entity_id: sensor.weather_station_indoor_humidity
+    on_value:
+    - lvgl.label.update:
+        id: living_room_humidity_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "%";

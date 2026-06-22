@@ -1,0 +1,29 @@
+Front_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: front_door, entity_id: light.front_door} }
+Back_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: back_door, entity_id: light.back_deck } }
+Side_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: side_door, entity_id: light.side_deck } }
+Soffit_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: soffit_light, entity_id: light.soffit_lights } }
+Flood_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: flood_light, entity_id: light.house_front_floodlight } }
+Gazebo_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: gazebo_light, entity_id: light.gazebo_lights } }
+
+# Outdoor temperature sensor
+outdoor_temp_sensor:
+  sensor:
+  - id: outdoor_temp
+    platform: homeassistant
+    entity_id: sensor.weather_station_outdoor_temperature
+    on_value:
+    - lvgl.label.update:
+        id: outdoor_temp_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "°C";
+
+# Outdoor humidity sensor
+outdoor_humidity_sensor:
+  sensor:
+  - id: outdoor_humidity
+    platform: homeassistant
+    entity_id: sensor.weather_station_humidity
+    on_value:
+    - lvgl.label.update:
+        id: outdoor_humidity_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "%";
+

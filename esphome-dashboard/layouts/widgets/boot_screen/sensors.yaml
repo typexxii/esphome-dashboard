@@ -1,0 +1,11 @@
+api:
+  on_client_connected:
+    - lvgl.widget.hide: boot_screen
+    - component.update: main_display
+
+image:
+  - file: https://esphome.io/favicon-512x512.png
+    id: boot_logo
+    resize: 200x200
+    type: RGB565
+    transparency: alpha_channel

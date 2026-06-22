@@ -1,0 +1,24 @@
+# Bathroom widget sensors
+bathroom_light_widget_sensors: !include { file: ../widgets/buttons/icon_text_buttons/simple_light_buttons/sensors.yaml, vars: { uid: bathroom_light, entity_id: light.bathroom } }
+
+# Bathroom temperature sensor
+bathroom_temp_sensor:
+  sensor:
+  - id: bathroom_temp
+    platform: homeassistant
+    entity_id: sensor.timmerflotte_temp_hmd_sensor_temperature
+    on_value:
+    - lvgl.label.update:
+        id: bathroom_temp_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "°C";
+
+# Bathroom humidity sensor
+bathroom_humidity_sensor:
+  sensor:
+  - id: bathroom_humidity
+    platform: homeassistant
+    entity_id: sensor.timmerflotte_temp_hmd_sensor_humidity
+    on_value:
+    - lvgl.label.update:
+        id: bathroom_humidity_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "%";

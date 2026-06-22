@@ -1,0 +1,25 @@
+# Kitchen widget sensors
+kitchen_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/sensors.yaml, vars: { uid: kitchen_light, entity_id: light.kitchen } }
+table_light_widget_sensors: !include { file: ../widgets/buttons/icon_text_buttons/light_buttons/sensors.yaml, vars: { uid: table_light, entity_id: switch.kitchen_table } }
+
+# Kitchen temperature sensor
+kitchen_temp_sensor:
+  sensor:
+  - id: kitchen_temp
+    platform: homeassistant
+    entity_id: sensor.timmerflotte_temp_hmd_sensor_temperature_2
+    on_value:
+    - lvgl.label.update:
+        id: kitchen_temp_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "°C";
+
+# Kitchen humidity sensor
+kitchen_humidity_sensor:
+  sensor:
+  - id: kitchen_humidity
+    platform: homeassistant
+    entity_id: sensor.timmerflotte_temp_hmd_sensor_humidity_2
+    on_value:
+    - lvgl.label.update:
+        id: kitchen_humidity_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "%";

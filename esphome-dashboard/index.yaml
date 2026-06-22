@@ -1,0 +1,11 @@
+esphome:
+  name: loungedisplay
+  friendly_name: HouseControl
+
+substitutions:
+  home_page: Living_Room
+
+packages:
+  common: !include common.yaml
+  device: !include device.yaml
+  layout: !include layouts/main.yaml

@@ -1,0 +1,27 @@
+# Bedroom widget sensors
+adrian_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/sensors.yaml, vars: { uid: adrian_light, entity_id: light.kajplats_e26_ws_globe_1100lm_2 } }
+zoe_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/sensors.yaml, vars: { uid: zoe_light, entity_id: light.kajplats_e26_ws_globe_1100lm } }
+wall_light_sensors: !include { file: ../widgets/buttons/icon_text_buttons/rgb_light_buttons/sensors.yaml, vars: { uid: wall_light, entity_id: light.varmblixt_table_wall_lamp } }
+fan_light_widget_sensors: !include { file: ../widgets/buttons/icon_text_buttons/temperature_light_buttons/sensors.yaml, vars: { uid: fan_light, entity_id: light.white_series_lightfan_module_light_1 } }
+
+# Bedroom temperature sensor
+bedroom_temp_sensor:
+  sensor:
+  - id: bedroom_temp
+    platform: homeassistant
+    entity_id: sensor.weather_station_temperature_2
+    on_value:
+    - lvgl.label.update:
+        id: bedroom_temp_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "°C";
+
+# Bedroom humidity sensor
+bedroom_humidity_sensor:
+  sensor:
+  - id: bedroom_humidity
+    platform: homeassistant
+    entity_id: sensor.weather_station_humidity_2
+    on_value:
+    - lvgl.label.update:
+        id: bedroom_humidity_value
+        text: !lambda return std::to_string(std::round(x * 10) / 10.0).substr(0, std::to_string(std::round(x * 10) / 10.0).find(".") + 2) + "%";

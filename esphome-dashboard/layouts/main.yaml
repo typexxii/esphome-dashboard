@@ -1,0 +1,78 @@
+globals: !include globals.yaml
+
+font: !include
+  file: fonts/fonts.yaml
+  vars:
+    text_sm: 16
+    text_md: 20
+    text_lg: 24
+    text_xl: 32
+    text_xxl: 48
+    icons_sm: 20
+    icons_md: 26
+    icons_lg: 34
+    icons_xl: 42
+    icons_xxl: 50
+
+# Nav widget sizing
+.sizing:
+- &nav_widget_vars
+  height: 50
+  padding: 8
+
+script: !include scripts.yaml
+
+lvgl:
+  default_font: roboto_md
+  theme: !include themes/main.yaml
+  top_layer:
+    widgets:
+    - <<: !include { file: widgets/header/widget.yaml, vars: { <<: *nav_widget_vars } }
+    - <<: !include { file: widgets/footer/widget.yaml, vars: { <<: *nav_widget_vars } }
+    - <<: !include { file: widgets/boot_screen/widget.yaml }
+    # Settings Panel (hidden by default, shown on swipe down)
+    - <<: !include widgets/settings_panel/widget.yaml
+    # RGB Light Control Panel (hidden by default, shown on long press)
+    - <<: !include widgets/light_control_panel/widget.yaml
+    # Temperature Light Control Panel (hidden by default, shown on long press)
+    - <<: !include widgets/temperature_light_control_panel/widget.yaml
+
+  pages:
+  - id: splash
+    skip: true
+    on_load:
+    - script.execute: go_home
+
+  - <<: !include pages/living_room.yaml
+  - <<: !include pages/kitchen.yaml
+  - <<: !include pages/bedroom.yaml
+  - <<: !include pages/bathroom.yaml
+  - <<: !include pages/outdoor.yaml
+
+
+packages:
+  # header
+  header_sensors: !include { file: widgets/header/sensors.yaml }
+
+  # boot screen
+  boot_screen_sensors: !include { file: widgets/boot_screen/sensors.yaml }
+
+  # settings initialization
+  <<: !include sensors/settings.yaml
+
+  # bedroom sensors
+  <<: !include sensors/bedroom.yaml
+
+  # living room sensors
+  <<: !include sensors/living_room.yaml
+
+  # bathroom sensors
+  <<: !include sensors/bathroom.yaml
+
+  # kitchen sensors
+  <<: !include sensors/kitchen.yaml
+
+  # outdoor sensors
+  <<: !include sensors/outdoor.yaml
+
+

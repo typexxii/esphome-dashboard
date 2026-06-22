@@ -1,0 +1,293 @@
+obj:
+  id: temp_light_control_panel
+  width: 100%
+  height: 100%
+  bg_color: 0x42495A
+  bg_opa: 98%
+  hidden: true
+  scrollbar_mode: "off"
+  scrollable: false
+  pad_left: 6
+  pad_right: 6
+  pad_top: 6
+  layout:
+    type: FLEX
+    flex_flow: COLUMN
+    flex_align_main: START
+    pad_row: 8
+  widgets:
+  # Header bar
+  - obj:
+      width: 100%
+      height: 45
+      bg_opa: TRANSP
+      border_width: 0
+      scrollbar_mode: "off"
+      scrollable: false
+      widgets:
+      - label:
+          id: temp_light_control_icon
+          text: "󰛨"
+          text_font: mdi_lg
+          text_color: 0xFFD080
+          align: LEFT_MID
+          x: 6
+      - label:
+          id: temp_light_control_title
+          text: "Light Control"
+          text_font: roboto_lg
+          text_color: 0xFFFFFF
+          align: LEFT_MID
+          x: 44
+      - button:
+          width: 40
+          height: 40
+          align: RIGHT_MID
+          bg_color: 0x5A6173
+          radius: 20
+          border_width: 0
+          on_click:
+          - script.execute: hide_temp_light_control
+          widgets:
+          - label:
+              text: "\U000F0156"
+              text_font: mdi_lg
+              text_color: 0xFF5555
+              align: CENTER
+  # Separator
+  - obj:
+      width: 100%
+      height: 2
+      bg_color: 0x555555
+      border_width: 0
+      radius: 1
+      scrollbar_mode: "off"
+  # Colour temperature preview bar
+  - obj:
+      width: 100%
+      height: 80
+      bg_opa: TRANSP
+      border_width: 0
+      scrollbar_mode: "off"
+      widgets:
+      - obj:
+          id: temp_color_preview
+          width: 100%
+          height: 50
+          radius: 25
+          bg_color: 0xFFD080
+          border_width: 3
+          border_color: 0x888888
+          align: CENTER
+          scrollbar_mode: "off"
+          widgets:
+          - label:
+              id: temp_kelvin_label
+              text: "2700K"
+              text_font: roboto_md
+              text_color: 0x000000
+              align: CENTER
+  # Colour temperature slider card
+  - obj:
+      width: 100%
+      height: 90
+      bg_color: 0x5A6173
+      radius: 20
+      border_width: 0
+      scrollbar_mode: "off"
+      pad_all: 12
+      widgets:
+      - label:
+          text: "\U000F050F"
+          text_font: mdi_md
+          text_color: 0xFFD080
+          align: TOP_LEFT
+      - label:
+          text: "Colour Temperature"
+          text_font: roboto_sm
+          text_color: 0xFFFFFF
+          align: TOP_LEFT
+          x: 36
+          y: 4
+      - label:
+          text: "Warm"
+          text_font: roboto_sm
+          text_color: 0xFFB347
+          align: BOTTOM_LEFT
+          y: 4
+      - label:
+          text: "Cool"
+          text_font: roboto_sm
+          text_color: 0xC9E2FF
+          align: BOTTOM_RIGHT
+          y: 4
+      - slider:
+          id: temp_light_kelvin_slider
+          width: 90%
+          height: 16
+          align: BOTTOM_MID
+          y: -20
+          min_value: 2000
+          max_value: 6500
+          value: 2700
+          bg_color: 0x42495A
+          indicator:
+            bg_color: 0xFFD080
+          knob:
+            bg_color: 0xFFFFFF
+            radius: 12
+          on_value:
+          - script.execute:
+              id: update_light_color_temp
+              kelvin: !lambda return (int)x;
+  # Brightness control card
+  - obj:
+      width: 100%
+      height: 90
+      bg_color: 0x5A6173
+      radius: 20
+      border_width: 0
+      scrollbar_mode: "off"
+      pad_all: 12
+      widgets:
+      - label:
+          text: "\U000F00E0"
+          text_font: mdi_md
+          text_color: 0xFFCC00
+          align: TOP_LEFT
+      - label:
+          text: "Brightness"
+          text_font: roboto_sm
+          text_color: 0xFFFFFF
+          align: TOP_LEFT
+          x: 36
+          y: 4
+      - label:
+          id: temp_light_brightness_value
+          text: "100%"
+          text_font: roboto_md
+          text_color: 0xFFFFFF
+          align: TOP_RIGHT
+          y: 2
+      - slider:
+          id: temp_light_brightness_slider
+          width: 90%
+          height: 16
+          align: BOTTOM_MID
+          y: -6
+          min_value: 1
+          max_value: 255
+          value: 255
+          bg_color: 0x42495A
+          indicator:
+            bg_color: 0xFFCC00
+          knob:
+            bg_color: 0xFFFFFF
+            radius: 12
+          on_value:
+          - script.execute:
+              id: update_temp_light_brightness
+              brightness: !lambda return (int)x;
+  # Quick preset temperature buttons
+  - obj:
+      width: 100%
+      height: 60
+      bg_opa: TRANSP
+      border_width: 0
+      scrollbar_mode: "off"
+      scrollable: false
+      layout:
+        type: FLEX
+        flex_flow: ROW
+        flex_align_main: SPACE_EVENLY
+      widgets:
+      # 2200K - Candlelight
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xFF7000
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: candle }
+          widgets:
+          - label:
+              text: "2.2K"
+              text_font: roboto_sm
+              text_color: 0xFFFFFF
+              align: CENTER
+      # 2700K - Warm White
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xFFB347
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: warm }
+          widgets:
+          - label:
+              text: "2.7K"
+              text_font: roboto_sm
+              text_color: 0x000000
+              align: CENTER
+      # 3500K - Neutral Warm
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xFFD080
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: neutral }
+          widgets:
+          - label:
+              text: "3.5K"
+              text_font: roboto_sm
+              text_color: 0x000000
+              align: CENTER
+      # 4500K - Cool White
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xFFEFCC
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: cool }
+          widgets:
+          - label:
+              text: "4.5K"
+              text_font: roboto_sm
+              text_color: 0x000000
+              align: CENTER
+      # 5500K - Daylight
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xE8F4FF
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: daylight }
+          widgets:
+          - label:
+              text: "5.5K"
+              text_font: roboto_sm
+              text_color: 0x000000
+              align: CENTER
+      # 6500K - Cool Daylight
+      - button:
+          width: 40
+          height: 40
+          radius: 20
+          bg_color: 0xC9E2FF
+          border_width: 0
+          on_click:
+          - script.execute: { id: set_temp_preset, preset: cool_daylight }
+          widgets:
+          - label:
+              text: "6.5K"
+              text_font: roboto_sm
+              text_color: 0x000000
+              align: CENTER

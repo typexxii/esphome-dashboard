@@ -1,0 +1,62 @@
+# required vars:
+# - uid
+# - entity_id
+
+# Binary sensor for on/off state
+binary_sensor:
+  - id: ${uid}_widget_sensor
+    platform: homeassistant
+    entity_id: ${entity_id}
+    trigger_on_initial_state: true
+    on_state:
+      - if:
+          condition:
+            - binary_sensor.is_on: ${uid}_widget_sensor
+          then:
+            - lvgl.widget.hide:
+                - ${uid}_icon_circle_unknown
+                - ${uid}_icon_circle_off
+            - lvgl.widget.show:
+                - ${uid}_icon_circle_on
+          else:
+            - lvgl.widget.hide:
+                - ${uid}_icon_circle_unknown
+                - ${uid}_icon_circle_on
+            - lvgl.widget.show:
+                - ${uid}_icon_circle_off
+
+# Text sensor for colour temperature (kelvin)
+# Maps 2000K (warm amber) -> 6500K (cool white-blue) onto the icon circle colour
+text_sensor:
+  - id: ${uid}_color_temp_sensor
+    platform: homeassistant
+    entity_id: ${entity_id}
+    attribute: color_temp_kelvin
+    on_value:
+      - lambda: |-
+          // Parse kelvin value from string (Home Assistant returns it as a number string)
+          if (x.length() > 0 && x != "None" && x != "null") {
+            int kelvin = std::atoi(x.c_str());
+            if (kelvin < 1000) kelvin = 2700;  // Sanity fallback
+
+            // Clamp to typical domestic range 2000K-6500K
+            if (kelvin < 2000) kelvin = 2000;
+            if (kelvin > 6500) kelvin = 6500;
+
+            // Interpolate between warm amber (2000K) and cool blue-white (6500K)
+            // 2000K -> R=255 G=147 B=41   (deep amber)
+            // 6500K -> R=201 G=226 B=255  (cool daylight)
+            float t = (float)(kelvin - 2000) / (6500 - 2000);  // 0.0 = warmest, 1.0 = coolest
+
+            int r = (int)(255 + t * (201 - 255));   // 255 -> 201
+            int g = (int)(147 + t * (226 - 147));   // 147 -> 226
+            int b = (int)(41  + t * (255 - 41));    // 41  -> 255
+
+            // Background: dimmed version of the interpolated colour
+            uint32_t bg_color  = ((r / 4) << 16) | ((g / 4) << 8) | (b / 4);
+            // Icon: full-brightness interpolated colour
+            uint32_t icon_color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
+
+            lv_obj_set_style_bg_color(id(${uid}_icon_circle_on), lv_color_hex(bg_color), LV_PART_MAIN);
+            lv_obj_set_style_text_color(id(${uid}_icon_label), lv_color_hex(icon_color), LV_PART_MAIN);
+          }
