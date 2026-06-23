@@ -31,6 +31,14 @@
   type: int
   restore_value: no
   initial_value: '255'
+- id: current_light_kelvin
+  type: int
+  restore_value: no
+  initial_value: '2700'
+- id: current_light_mode
+  type: std::string
+  restore_value: no
+  initial_value: '"colour"'
 # Temperature light control panel state
 - id: current_temp_light_entity
   type: std::string

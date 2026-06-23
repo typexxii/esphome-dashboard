@@ -89,8 +89,9 @@ obj:
               text_font: roboto_md
               text_color: 0x000000
               align: CENTER
-  # Colour slider card
+  # Colour (hue) slider card — shown in colour mode
   - obj:
+      id: light_hue_card
       width: 100%
       height: 90
       bg_color: 0x5A6173
@@ -131,6 +132,62 @@ obj:
           - script.execute:
               id: update_light_color
               hue: !lambda return (int)x;
+  # Colour temperature slider card — shown in white mode
+  - obj:
+      id: light_kelvin_card
+      width: 100%
+      height: 90
+      bg_color: 0x5A6173
+      radius: 20
+      border_width: 0
+      scrollbar_mode: "off"
+      scrollable: false
+      pad_all: 12
+      hidden: true
+      widgets:
+      - label:
+          text: "\U000F050F"
+          text_font: mdi_md
+          text_color: 0xFFD080
+          align: TOP_LEFT
+      - label:
+          text: "Colour Temperature"
+          text_font: roboto_sm
+          text_color: 0xFFFFFF
+          align: TOP_LEFT
+          x: 36
+          y: 4
+      - label:
+          text: "Warm"
+          text_font: roboto_sm
+          text_color: 0xFFB347
+          align: BOTTOM_LEFT
+          y: 4
+      - label:
+          text: "Cool"
+          text_font: roboto_sm
+          text_color: 0xC9E2FF
+          align: BOTTOM_RIGHT
+          y: 4
+      - slider:
+          id: light_kelvin_slider
+          width: 90%
+          height: 16
+          align: BOTTOM_MID
+          y: -20
+          min_value: 2000
+          max_value: 6500
+          value: 2700
+          bg_color: 0x42495A
+          indicator:
+            bg_color: 0xFFD080
+          knob:
+            bg_color: 0xFFFFFF
+            radius: 12
+          on_value:
+          - script.execute:
+              id: update_light_kelvin
+              kelvin: !lambda return (int)x;
   # Brightness control card
   - obj:
       width: 100%
