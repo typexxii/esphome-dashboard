@@ -33,12 +33,13 @@ A touch-enabled smart home lighting control panel built with ESPHome and LVGL fo
 - **Bedroom** — Light controls, temperature & humidity monitoring
 - **Living Room** — Multi-zone lighting, climate sensors
 - **Bathroom** — Light and environmental controls
-- **Corridor** — Hallway lighting
+- **Kitchen** — Kitchen lighting
 - **Outdoor** — External lighting and sensors
 
 ### Smart Lighting
 - Toggle switches for standard lights
-- RGB light control with color picker
+- RGB light control slider with color picker
+- Colour temperature control with slider
 - Brightness adjustment via long-press
 - Visual state feedback with icons
 
