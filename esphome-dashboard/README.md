@@ -14,7 +14,7 @@ A touch-enabled smart home lighting control panel built with ESPHome and LVGL fo
 | **PSRAM** | 8MB (Octal mode) |
 | **Flash** | 16MB |
 | **Touch Controller** | AXS15231 |
-| **Display Interface** | QSPI |
+| **Display Interface** | MIPI-SPI |
 | **Framework** | ESP-IDF |
 
 ### Where to Buy
