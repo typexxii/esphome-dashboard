@@ -16,6 +16,55 @@
       id: show_light_control
       light_entity: ${entity_id}
       light_uid: ${uid}
+      red: !lambda |-
+        std::string raw = id(${uid}_rgb_sensor).state;
+        int r = 255, g = 183, b = 71;
+        if (raw.length() > 0 && raw != "None" && raw != "null" && (raw.front() == '(' || raw.front() == '[')) {
+          std::string c = raw.substr(1, raw.length() - 2);
+          int p1 = c.find(',');
+          if (p1 != std::string::npos) {
+            int p2 = c.find(',', p1 + 1);
+            if (p2 != std::string::npos) {
+              r = std::atoi(c.substr(0, p1).c_str());
+            }
+          }
+        }
+        return r;
+      green: !lambda |-
+        std::string raw = id(${uid}_rgb_sensor).state;
+        int r = 255, g = 183, b = 71;
+        if (raw.length() > 0 && raw != "None" && raw != "null" && (raw.front() == '(' || raw.front() == '[')) {
+          std::string c = raw.substr(1, raw.length() - 2);
+          int p1 = c.find(',');
+          if (p1 != std::string::npos) {
+            int p2 = c.find(',', p1 + 1);
+            if (p2 != std::string::npos) {
+              g = std::atoi(c.substr(p1 + 1, p2 - p1 - 1).c_str());
+            }
+          }
+        }
+        return g;
+      blue: !lambda |-
+        std::string raw = id(${uid}_rgb_sensor).state;
+        int r = 255, g = 183, b = 71;
+        if (raw.length() > 0 && raw != "None" && raw != "null" && (raw.front() == '(' || raw.front() == '[')) {
+          std::string c = raw.substr(1, raw.length() - 2);
+          int p1 = c.find(',');
+          if (p1 != std::string::npos) {
+            int p2 = c.find(',', p1 + 1);
+            if (p2 != std::string::npos) {
+              b = std::atoi(c.substr(p2 + 1).c_str());
+            }
+          }
+        }
+        return b;
+      brightness: !lambda |-
+        std::string raw = id(${uid}_brightness_sensor).state;
+        if (raw.length() > 0 && raw != "None" && raw != "null") {
+          int bri = std::atoi(raw.c_str());
+          if (bri > 0) return bri;
+        }
+        return 255;
   widgets:
     # Icon circle container - OFF state (gray)
     - obj:

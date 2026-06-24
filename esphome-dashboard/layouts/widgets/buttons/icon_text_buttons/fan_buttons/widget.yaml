@@ -19,11 +19,11 @@
 on_short_click:
 - logger.log: "Toggling switch ${entity_id}"
 - homeassistant.service:
-    action: switch.toggle
+    action: fan.toggle
     data:
       entity_id: ${entity_id}
 on_long_press:
 - homeassistant.service:
-    action: switch.turn_off
+    action: fan.turn_off
     data:
       entity_id: ${entity_id}

@@ -68,6 +68,6 @@
     - label:
         id: ${uid}_widget_text
         text: ${text}
-        text_font: roboto_md
+        text_font: roboto_sm
         align: LEFT_MID
         x: 62

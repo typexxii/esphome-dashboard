@@ -1,9 +1,9 @@
 esphome:
-  name: loungedisplay
-  friendly_name: HouseControl
+  name: bedroomdisplay
+  friendly_name: BedroomControler
 
 substitutions:
-  home_page: Living_Room
+  home_page: bedroom
 
 packages:
   common: !include common.yaml

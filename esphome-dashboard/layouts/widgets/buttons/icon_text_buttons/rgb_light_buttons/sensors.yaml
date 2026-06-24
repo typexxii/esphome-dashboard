@@ -25,8 +25,13 @@ binary_sensor:
             - lvgl.widget.show:
                 - ${uid}_icon_circle_off
 
-# Text sensor for RGB color
+# Text sensors for brightness and RGB color
 text_sensor:
+  - id: ${uid}_brightness_sensor
+    platform: homeassistant
+    entity_id: ${entity_id}
+    attribute: brightness
+    on_value: []
   - id: ${uid}_rgb_sensor
     platform: homeassistant
     entity_id: ${entity_id}

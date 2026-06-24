@@ -1,6 +1,6 @@
 - id: go_home
   then:
-  - lvgl.page.show: living_room
+  - lvgl.page.show: bedroom
 
 - id: turn_off_display
   then:
@@ -8,6 +8,7 @@
       id: display_on
       value: 'false'
   - light.turn_off: backlight
+  - lvgl.widget.show: screen_off_blocker
 
 - id: turn_on_display
   then:
@@ -15,6 +16,8 @@
       id: display_on
       value: 'true'
   - light.turn_on: backlight
+  - lvgl.widget.hide: screen_off_blocker
+  - lvgl.resume:
   - script.execute: go_home
 
 - id: show_settings
@@ -44,10 +47,63 @@
   parameters:
     light_entity: string
     light_uid: string
+    red: int
+    green: int
+    blue: int
+    brightness: int
   then:
   - globals.set:
       id: current_light_entity
       value: !lambda return light_entity;
+  - globals.set:
+      id: current_light_brightness
+      value: !lambda return brightness;
+  - lambda: |-
+      // Sync brightness slider and label
+      lv_slider_set_value(id(light_brightness_slider), brightness, LV_ANIM_OFF);
+      char buf[8];
+      snprintf(buf, sizeof(buf), "%d%%", (brightness * 100) / 255);
+      lv_label_set_text(id(light_brightness_value), buf);
+
+      // Convert RGB to HSV
+      float r = red / 255.0f, g = green / 255.0f, b = blue / 255.0f;
+      float cmax = std::max({r, g, b});
+      float cmin = std::min({r, g, b});
+      float delta = cmax - cmin;
+
+      int h = 0, s = 0, v = (int)(cmax * 100);
+      if (delta > 0.001f) {
+        if (cmax == r)      h = (int)(60 * fmod((g - b) / delta, 6));
+        else if (cmax == g) h = (int)(60 * ((b - r) / delta + 2));
+        else                h = (int)(60 * ((r - g) / delta + 4));
+        if (h < 0) h += 360;
+        s = (int)((delta / cmax) * 100);
+      }
+
+      // Detect white mode: low saturation
+      if (s < 10) {
+        id(current_light_mode) = std::string("white");
+        lv_obj_add_flag(id(light_hue_card), LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(id(light_kelvin_card), LV_OBJ_FLAG_HIDDEN);
+        // Preview stays as the white/warm colour from rgb
+        uint32_t color = ((uint32_t)red << 16) | ((uint32_t)green << 8) | (uint32_t)blue;
+        lv_obj_set_style_bg_color(id(light_color_preview), lv_color_hex(color), LV_PART_MAIN);
+        int k = id(current_light_kelvin);
+        char kbuf[12];
+        snprintf(kbuf, sizeof(kbuf), "%dK", k);
+        lv_label_set_text(id(light_color_label), kbuf);
+      } else {
+        id(current_light_mode) = std::string("colour");
+        id(current_light_hue) = h;
+        id(current_light_saturation) = s;
+        lv_obj_clear_flag(id(light_hue_card), LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(id(light_kelvin_card), LV_OBJ_FLAG_HIDDEN);
+        lv_slider_set_value(id(light_hue_arc), h, LV_ANIM_OFF);
+        lv_slider_set_value(id(light_saturation_slider), s, LV_ANIM_OFF);
+        lv_label_set_text(id(light_color_label), "Colour");
+        uint32_t color = ((uint32_t)red << 16) | ((uint32_t)green << 8) | (uint32_t)blue;
+        lv_obj_set_style_bg_color(id(light_color_preview), lv_color_hex(color), LV_PART_MAIN);
+      }
   - lvgl.label.update:
       id: light_control_title
       text: !lambda |-
@@ -172,7 +228,7 @@
         default: r2 = 1.0f; g2 = 0; b2 = 1.0f - f2; break;
       }
       uint32_t arc_color = ((int)(r2 * 255) << 16) | ((int)(g2 * 255) << 8) | (int)(b2 * 255);
-      lv_obj_set_style_arc_color(id(light_hue_arc), lv_color_hex(arc_color), LV_PART_INDICATOR);
+      lv_obj_set_style_bg_color(id(light_hue_arc), lv_color_hex(arc_color), LV_PART_INDICATOR);
   - homeassistant.service:
       service: light.turn_on
       data_template:
@@ -263,10 +319,38 @@
   parameters:
     light_entity: string
     light_uid: string
+    kelvin: int
+    brightness: int
   then:
   - globals.set:
       id: current_temp_light_entity
       value: !lambda return light_entity;
+  - globals.set:
+      id: current_temp_light_kelvin
+      value: !lambda return kelvin;
+  - globals.set:
+      id: current_temp_light_brightness
+      value: !lambda return brightness;
+  - lambda: |-
+      // Sync kelvin slider and preview
+      lv_slider_set_value(id(temp_light_kelvin_slider), kelvin, LV_ANIM_OFF);
+      char kbuf[12];
+      snprintf(kbuf, sizeof(kbuf), "%dK", kelvin);
+      lv_label_set_text(id(temp_kelvin_label), kbuf);
+      float t = (float)(kelvin - 2000) / (6500 - 2000);
+      if (t < 0.0f) t = 0.0f;
+      if (t > 1.0f) t = 1.0f;
+      int r = (int)(255 + t * (201 - 255));
+      int g = (int)(147 + t * (226 - 147));
+      int b = (int)(41  + t * (255 - 41));
+      uint32_t color = ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
+      lv_obj_set_style_bg_color(id(temp_color_preview), lv_color_hex(color), LV_PART_MAIN);
+      lv_obj_set_style_bg_color(id(temp_light_kelvin_slider), lv_color_hex(color), LV_PART_INDICATOR);
+      // Sync brightness slider and label
+      lv_slider_set_value(id(temp_light_brightness_slider), brightness, LV_ANIM_OFF);
+      char bbuf[8];
+      snprintf(bbuf, sizeof(bbuf), "%d%%", (brightness * 100) / 255);
+      lv_label_set_text(id(temp_light_brightness_value), bbuf);
   - lvgl.label.update:
       id: temp_light_control_title
       text: "Light Control"

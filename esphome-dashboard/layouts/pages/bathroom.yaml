@@ -44,6 +44,14 @@ widgets:
             width: 49%
             height: 86
 
+    # Spacer — pushes temp/humidity to the bottom
+    - obj:
+        width: 100%
+        flex_grow: 1
+        bg_opa: TRANSP
+        border_width: 0
+        scrollbar_mode: "off"
+
     # Separator before Temp/Humidity
     - obj:
         width: 100%

@@ -76,6 +76,16 @@ widgets:
             text: Ceiling
             width: 49%
             height: 86
+
+    - button:
+        <<: !include
+          file: ../widgets/buttons/icon_text_buttons/fan_buttons/widget.yaml
+          vars:
+            uid: fan
+            entity_id: fan.white_series_lightfan_module
+            text: Fan
+            width: 49%
+            height: 86
        
 
     # Separator before Temp/Humidity

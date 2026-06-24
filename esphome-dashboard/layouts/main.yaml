@@ -36,21 +36,28 @@ lvgl:
     - <<: !include widgets/light_control_panel/widget.yaml
     # Temperature Light Control Panel (hidden by default, shown on long press)
     - <<: !include widgets/temperature_light_control_panel/widget.yaml
-    # Climate Control Panel (hidden by default, shown on click)
-  #  - <<: !include widgets/climate_control_panel/widget.yaml
+    # Screen-off touch blocker — full-screen overlay shown when display is off
+    # Sits on top of everything and absorbs all touches so no buttons fire
+    - obj:
+        id: screen_off_blocker
+        width: 100%
+        height: 100%
+        bg_opa: TRANSP
+        border_width: 0
+        hidden: true
+
   pages:
   - id: splash
     skip: true
     on_load:
     - script.execute: go_home
 
+  - <<: !include pages/bedroom.yaml
   - <<: !include pages/living_room.yaml
   - <<: !include pages/kitchen.yaml
-  - <<: !include pages/bedroom.yaml
   - <<: !include pages/bathroom.yaml
   - <<: !include pages/outdoor.yaml
-# - <<: !include pages/energy.yaml
-# - <<: !include pages/climate.yaml
+
 
 packages:
   # header
@@ -77,8 +84,4 @@ packages:
   # outdoor sensors
   <<: !include sensors/outdoor.yaml
 
-  # energy sensors
-  #  <<: !include sensors/energy.yaml
 
-  # climate sensors
-  #  <<: !include sensors/climate.yaml

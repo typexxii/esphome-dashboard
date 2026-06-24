@@ -25,9 +25,13 @@ binary_sensor:
             - lvgl.widget.show:
                 - ${uid}_icon_circle_off
 
-# Text sensor for colour temperature (kelvin)
-# Maps 2000K (warm amber) -> 6500K (cool white-blue) onto the icon circle colour
+# Text sensors for brightness and colour temperature
 text_sensor:
+  - id: ${uid}_brightness_sensor
+    platform: homeassistant
+    entity_id: ${entity_id}
+    attribute: brightness
+    on_value: []
   - id: ${uid}_color_temp_sensor
     platform: homeassistant
     entity_id: ${entity_id}

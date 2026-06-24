@@ -59,6 +59,14 @@ widgets:
             service: switch.toggle
             data: { entity_id: switch.kitchen_table }
 
+    # Spacer — pushes temp/humidity to the bottom
+    - obj:
+        width: 100%
+        flex_grow: 1
+        bg_opa: TRANSP
+        border_width: 0
+        scrollbar_mode: "off"
+
     # Separator before Temp/Humidity
     - obj:
         width: 100%

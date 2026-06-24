@@ -16,6 +16,20 @@
       id: show_temp_light_control
       light_entity: ${entity_id}
       light_uid: ${uid}
+      kelvin: !lambda |-
+        std::string raw = id(${uid}_color_temp_sensor).state;
+        if (raw.length() > 0 && raw != "None" && raw != "null") {
+          int k = std::atoi(raw.c_str());
+          if (k >= 1000) return k;
+        }
+        return 2700;
+      brightness: !lambda |-
+        std::string raw = id(${uid}_brightness_sensor).state;
+        if (raw.length() > 0 && raw != "None" && raw != "null") {
+          int bri = std::atoi(raw.c_str());
+          if (bri > 0) return bri;
+        }
+        return 255;
   widgets:
     # Icon circle container - OFF state (gray)
     - obj:
