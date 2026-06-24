@@ -1,6 +1,6 @@
 # ESPHome Home Assistant Display
 
-A touch-enabled smart home lighting control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, directly from a sleek wall-mounted touchscreen. Based on https://github.com/gizmo-boss/esphome-lvgl-dashboard, added new control for temperature colour only lights, cleaned up pages and sliders for colour and colour temperature, when using RGB overlay if selectig white switch control to colour temperature, touch to wake only wakes on bottom quarter of screen, when screen off fixed bug where butons could still be pressed, fixed other minor issues.
+A touch-enabled smart home lighting control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, directly from a sleek wall-mounted touchscreen. Based on https://github.com/gizmo-boss/esphome-lvgl-dashboard, added new control for temperature colour only lights, cleaned up pages and sliders for colour and colour temperature, when using RGB overlay if selecting white switch control to colour temperature, touch to wake only wakes on bottom quarter of screen, when screen off fixed bug where buttons could still be pressed, fixed other minor issues.
 ---
 
 ## Device Specifications
