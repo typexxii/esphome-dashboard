@@ -1,6 +1,6 @@
 # ESPHome Home Assistant Display
 
-A touch-enabled smart home lighting control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, directly from a sleek wall-mounted touchscreen. Based on https://github.com/gizmo-boss/esphome-lvgl-dashboard, added new control for temperature colour only lights, cleaned up pages and sliders for colour and colour temperature, fixed issues etc.
+A touch-enabled smart home lighting control panel built with ESPHome and LVGL for the JC3248W535C ESP32-S3 display module. Control your lights, directly from a sleek wall-mounted touchscreen. Based on https://github.com/gizmo-boss/esphome-lvgl-dashboard, added new control for temperature colour only lights, cleaned up pages and sliders for colour and colour temperature, when using RGB overlay if selectig white switch control to colour temperature, touch to wake only wakes on bottom quarter of screen, when screen off fixed bug where butons could still be pressed, fixed other minor issues.
 ---
 
 ## Device Specifications
@@ -31,16 +31,16 @@ A touch-enabled smart home lighting control panel built with ESPHome and LVGL fo
 
 ### Room-Based Control Pages
 - **Bedroom** — Light controls, temperature & humidity monitoring
-- **Living Room** — Multi-zone lighting, climate sensors
-- **Bathroom** — Light and environmental controls
-- **Kitchen** — Kitchen lighting
-- **Outdoor** — External lighting and sensors
+- **Living Room** — Multi-zone lighting, temperature & humidity monitoring
+- **Bathroom** — Light controls, temperature & humidity monitoring
+- **Kitchen** — Kitchen lighting, temperature & humidity monitoring
+- **Outdoor** — External lighting and sensors, temperature & humidity monitoring
 
 ### Smart Lighting
 - Toggle switches for standard lights
-- RGB light control slider with color picker
-- Colour temperature control with slider
-- Brightness adjustment via long-press
+- RGB light control slider 
+- Colour temperature control slider
+- Brightness/temperature/colour adjustment via long-press
 - Visual state feedback with icons
 
 ### Settings Panel
@@ -161,52 +161,6 @@ After initial USB flash, updates can be pushed wirelessly:
 
 ```powershell
 esphome run index.yaml --device esphome-web-e90dec.local
-```
-
----
-
-## Project Structure
-
-```
-HomeAssistant_Display/
-├── index.yaml              # Main entry point
-├── device.yaml             # Hardware configuration (ESP32-S3, display, touch)
-├── common.yaml             # WiFi, API, sensors, OTA config
-├── secrets.yaml            # Credentials (not committed to git)
-│
-└── layouts/
-    ├── main.yaml           # LVGL layout orchestrator
-    ├── globals.yaml        # Global variables
-    ├── scripts.yaml        # ESPHome scripts
-    │
-    ├── fonts/              # Custom fonts (Roboto, MDI icons)
-    ├── themes/             # LVGL theme configuration
-    ├── styles/             # Reusable widget styles
-    │
-    ├── pages/              # Room-specific pages
-    │   ├── bedroom.yaml
-    │   ├── living_room.yaml
-    │   ├── bathroom.yaml
-    │   ├── kitchen.yaml
-    │   └── outdoor.yaml
-    │
-    ├── sensors/            # Home Assistant sensor bindings
-    │
-    └── widgets/            # Reusable UI components
-        ├── header/         # Top navigation bar
-        ├── footer/         # Bottom navigation
-        ├── boot_screen/    # Startup splash
-        ├── settings_panel/ # Settings overlay
-        ├── buttons/        # Button variants
-        │   ├── icon_buttons/
-        │   ├── text_buttons/
-        │   └── icon_text_buttons/
-        │       ├── light_buttons/
-        │       ├── rgb_light_buttons/
-        │       └── fan_buttons/
-        ├── light_control_panel/   # Brightness slider overlay
-
-```
 
 ---
 
